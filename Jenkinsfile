@@ -1,21 +1,15 @@
-pipeline {
-    agent {
-        docker {
-            image 'node:16-buster-slim' 
-            args '-p 3000:3000' 
+node {
+    docker.image('node:16-buster-slim').inside('-p 3000:3000') {
+		//build stage
+        stage('Build') {
+			//eksekusi build
+            sh 'npm install'
         }
-    }
-    stages {
-        stage('Build') { 
-            steps {
-                sh 'npm install'
-            }
-        }
+		
+		//test stage
         stage('Test') {
-            steps {
-                sh './jenkins/scripts/test.sh'
-            }
+			//eksekusi test
+            sh './jenkins/scripts/test.sh'
         }
     }
-        
 }
